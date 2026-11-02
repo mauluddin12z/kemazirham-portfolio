@@ -40,14 +40,27 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      # Hubungkan runner ke Tailnet privat Anda
-      - name: Connect to Tailscale
+      # METODE A: Hubungkan ke Tailscale menggunakan Auth Key (Paling mudah & direkomendasikan)
+      - name: Connect to Tailscale (Auth Key)
+        if: "${{ secrets.TAILSCALE_AUTHKEY != '' }}"
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      # METODE B: Hubungkan ke Tailscale menggunakan OAuth Client (Jika pakai Client ID & Secret)
+      - name: Connect to Tailscale (OAuth)
+        if: "${{ secrets.TAILSCALE_AUTHKEY == '' && secrets.TS_OAUTH_CLIENT_ID != '' }}"
         uses: tailscale/github-action@v3
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          audience: ${{ secrets.TS_AUDIENCE }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
-          ping: ${{ secrets.SSH_HOST }}
+
+      # Cek ketersediaan host di jaringan Tailscale
+      - name: Verify Tailscale Connection
+        run: |
+          echo "Memverifikasi koneksi ke host Tailscale: ${{ secrets.SSH_HOST }}"
+          ping -c 3 ${{ secrets.SSH_HOST }} || echo "Ping tidak direspons, melanjutkan ke SSH..."
 
       # Akses VPS / Homeserver melalui IP Tailscale (100.x.y.z atau MagicDNS)
       - name: Deploy via SSH
