@@ -113,6 +113,20 @@ export const PORTFOLIO_SECTIONS: SectionCategory[] = [
         matchScore: 94,
         videoUrl: "https://www.youtube.com/embed/H7jtC8vjXw8?autoplay=1&rel=0",
       },
+      {
+        id: "comm-6",
+        title: "Velocity Bloom",
+        description:
+          "Campaign beauty dan lifestyle yang memadukan mode premium dengan ritme cepat, detail close-up produk, dan sinematografi yang lembut namun berenergi tinggi.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1770&auto=format&fit=crop",
+        year: "2025",
+        category: "Beauty Campaign",
+        role: "Director of Photography",
+        camera: "Sony FX3 & Zeiss CP.3",
+        matchScore: 96,
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&rel=0",
+      },
     ],
   },
   {
@@ -522,4 +536,3 @@ export const PORTFOLIO_SECTIONS: SectionCategory[] = [
     ],
   },
 ];
-
