@@ -86,7 +86,7 @@ jobs:
             export PATH="$PATH:/usr/local/bin:/usr/bin:$HOME/.npm-global/bin"
 
             # Masuk ke direktori aplikasi
-            cd /var/www/kemazirham || cd "$HOME/kemazirham" || exit 1
+            cd /data/kemazirham-portfolio || cd "$HOME/kemazirham-portfolio" || exit 1
 
             echo "🚀 [1/4] Pulling latest changes from GitHub..."
             git pull origin main
