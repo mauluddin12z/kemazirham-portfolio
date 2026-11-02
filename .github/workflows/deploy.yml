@@ -232,9 +232,9 @@ jobs:
             echo "[4/4] Reloading PM2..."
 
             if pm2 describe kemazirham-portfolio > /dev/null 2>&1; then
-              pm2 reload ecosystem.config.js --env production
+              pm2 reload ecosystem.config.js --env production --update-env
             else
-              pm2 start ecosystem.config.js --env production
+              pm2 start ecosystem.config.js --env production --update-env
             fi
 
             pm2 save

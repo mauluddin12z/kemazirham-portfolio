@@ -65,7 +65,7 @@ module.exports = {
       path: "/var/www/kemazirham",
       "pre-deploy-local": "",
       "post-deploy":
-        "npm install && npm run build && cd cms && npm install && npm run build && cd .. && pm2 reload ecosystem.config.js --env production && pm2 save",
+        "npm install && npm run build && cd cms && npm install && npm run build && cd .. && pm2 reload ecosystem.config.js --env production --update-env && pm2 save",
       "pre-setup": "",
       env: {
         NODE_ENV: "production",

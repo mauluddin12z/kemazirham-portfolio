@@ -42,7 +42,11 @@ export async function fetchPortfolioFromStrapi(): Promise<{
   try {
     const url = `${STRAPI_BASE_URL}/api/projects?sort=order:asc&pagination[pageSize]=100`;
     const res = await fetch(url, {
-      cache: "no-store", // Always fetch fresh data from Strapi
+      cache: "no-store",
+      next: { revalidate: 0 },
+      headers: {
+        "Cache-Control": "no-cache",
+      },
     });
 
     if (!res.ok) {

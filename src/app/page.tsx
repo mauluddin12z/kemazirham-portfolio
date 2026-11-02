@@ -23,7 +23,9 @@ export default function Home() {
   useEffect(() => {
     async function loadStrapiData() {
       try {
-        const res = await fetch("/api/portfolio");
+        const res = await fetch(`/api/portfolio?_t=${Date.now()}`, {
+          cache: "no-store",
+        });
         if (res.ok) {
           const data = await res.json();
           if (data?.sections && Array.isArray(data.sections)) {
