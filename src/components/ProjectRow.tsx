@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProjectCard from "./ProjectCard";
-import { Project } from "@/data/portfolioData";
+import { Project } from "@/types/portfolio";
 
 interface ProjectRowProps {
   id: string;

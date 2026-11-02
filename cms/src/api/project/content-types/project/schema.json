@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project",
+    "description": "Portfolio cinematic & photography projects"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "imageUrl": {
+      "type": "string",
+      "required": true
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "year": {
+      "type": "string",
+      "default": "2026"
+    },
+    "category": {
+      "type": "string",
+      "required": true
+    },
+    "sectionId": {
+      "type": "enumeration",
+      "enum": [
+        "commercials",
+        "music-videos",
+        "weddings",
+        "events",
+        "photography"
+      ],
+      "required": true,
+      "default": "commercials"
+    },
+    "role": {
+      "type": "string"
+    },
+    "camera": {
+      "type": "string"
+    },
+    "matchScore": {
+      "type": "integer",
+      "default": 98
+    },
+    "duration": {
+      "type": "string"
+    },
+    "mediaType": {
+      "type": "enumeration",
+      "enum": [
+        "video",
+        "photo"
+      ],
+      "default": "video"
+    },
+    "isHero": {
+      "type": "boolean",
+      "default": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}
+

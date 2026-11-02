@@ -43,3 +43,11 @@ next-env.d.ts
 # pm2 logs
 /logs/
 *.log
+
+# strapi cms
+cms/.tmp/
+cms/.strapi/
+cms/dist/
+cms/data/*.db
+cms/public/uploads/*
+!cms/public/uploads/.gitkeep

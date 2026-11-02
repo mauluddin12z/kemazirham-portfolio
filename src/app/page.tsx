@@ -1,21 +1,46 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProjectRow from "@/components/ProjectRow";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectModal from "@/components/ProjectModal";
 import Footer from "@/components/Footer";
-import { PORTFOLIO_SECTIONS, Project } from "@/data/portfolioData";
+import { Project, SectionCategory } from "@/types/portfolio";
 import { Film } from "lucide-react";
 
 export default function Home() {
+  const [sections, setSections] = useState<SectionCategory[]>([]);
+  const [heroProject, setHeroProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [autoPlayVideo, setAutoPlayVideo] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Ambil seluruh data langsung dari Strapi CMS
+  useEffect(() => {
+    async function loadStrapiData() {
+      try {
+        const res = await fetch("/api/portfolio");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.sections && Array.isArray(data.sections)) {
+            setSections(data.sections);
+          }
+          if (data?.heroProject) {
+            setHeroProject(data.heroProject);
+          }
+        }
+      } catch (err) {
+        console.error("Gagal memuat data dari Strapi CMS:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadStrapiData();
+  }, []);
   const handleOpenProject = (project: Project, playImmediately = false) => {
     setSelectedProject(project);
     setAutoPlayVideo(project.mediaType === "photo" ? false : playImmediately);
@@ -27,13 +52,13 @@ export default function Home() {
     setAutoPlayVideo(false);
   };
 
-  // Filtered projects if user searches
+  // Filter hasil pencarian
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return [];
     const query = searchQuery.toLowerCase();
 
     const allProjects: Project[] = [];
-    PORTFOLIO_SECTIONS.forEach((sec) => {
+    sections.forEach((sec) => {
       sec.projects.forEach((p) => {
         if (!allProjects.some((existing) => existing.id === p.id)) {
           allProjects.push(p);
@@ -49,7 +74,7 @@ export default function Home() {
         (p.role && p.role.toLowerCase().includes(query)) ||
         (p.camera && p.camera.toLowerCase().includes(query)),
     );
-  }, [searchQuery]);
+  }, [searchQuery, sections]);
 
   return (
     <main className="min-h-screen bg-[#141414] text-white flex flex-col justify-between selection:bg-[#E50914] selection:text-white">
@@ -99,23 +124,50 @@ export default function Home() {
         <>
           {/* Hero Feature Showcase */}
           <Hero
-            onOpenProject={(p) => handleOpenProject(p, false)}
+            heroProject={heroProject}
             onPlayShowreel={(p) => handleOpenProject(p, true)}
           />
 
           {/* Video Poster Rows */}
           <div className="-mt-14 sm:-mt-20 md:-mt-28 relative z-20 pb-12 space-y-1">
-            {PORTFOLIO_SECTIONS.map((section) => (
-              <ProjectRow
-                key={section.id}
-                id={section.id}
-                title={section.title}
-                projects={section.projects}
-                isLarge={section.isLarge}
-                onSelectProject={(p) => handleOpenProject(p, false)}
-                onPlayProject={(p) => handleOpenProject(p, true)}
-              />
-            ))}
+            {isLoading ? (
+              /* Netflix Loading Skeleton Shimmer */
+              <div className="px-4 sm:px-8 md:px-12 space-y-8 animate-pulse">
+                {[1, 2, 3].map((n) => (
+                  <div key={n} className="space-y-3">
+                    <div className="h-6 w-48 bg-zinc-800 rounded" />
+                    <div className="flex gap-4 overflow-hidden">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <div
+                          key={i}
+                          className="w-[240px] sm:w-[280px] h-[150px] bg-zinc-800/60 rounded-md shrink-0"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : sections.length > 0 ? (
+              sections.map((section) => (
+                <ProjectRow
+                  key={section.id}
+                  id={section.id}
+                  title={section.title}
+                  projects={section.projects}
+                  isLarge={section.isLarge}
+                  onSelectProject={(p) => handleOpenProject(p, false)}
+                  onPlayProject={(p) => handleOpenProject(p, true)}
+                />
+              ))
+            ) : (
+              <div className="text-center py-20 text-zinc-500 text-sm">
+                <p>Belum ada project yang dipublikasikan di Strapi CMS.</p>
+                <p className="text-xs mt-1">
+                  Buka Strapi Admin (<code>http://localhost:1337/admin</code>)
+                  untuk menambah konten.
+                </p>
+              </div>
+            )}
           </div>
         </>
       )}

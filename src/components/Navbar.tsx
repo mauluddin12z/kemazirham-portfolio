@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, Bell, Menu, X } from "lucide-react";
+import { Search, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   onSearchChange?: (query: string) => void;
@@ -14,23 +14,12 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 40) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (onSearchChange) {
-      onSearchChange(searchQuery);
-    }
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -84,6 +73,18 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
 
       {/* Right Actions */}
       <div className="flex items-center gap-3 sm:gap-4 text-gray-200">
+        {/* Search Input */}
+        <div className="hidden sm:flex items-center gap-2 bg-black/40 border border-white/20 rounded-md px-3 py-1.5">
+          <Search className="w-4 h-4 text-gray-400 shrink-0" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleInputChange}
+            placeholder="Cari karya..."
+            className="bg-transparent text-sm text-white placeholder-gray-500 outline-none w-36 focus:w-48 transition-all duration-300"
+          />
+        </div>
+
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -101,6 +102,17 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-netflix-dark/98 backdrop-blur-xl border-b border-white/10 p-5 md:hidden shadow-2xl flex flex-col gap-3">
+          {/* Mobile Search */}
+          <div className="flex items-center gap-2 bg-black/40 border border-white/20 rounded-md px-3 py-2 mb-2">
+            <Search className="w-4 h-4 text-gray-400 shrink-0" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleInputChange}
+              placeholder="Cari karya..."
+              className="bg-transparent text-sm text-white placeholder-gray-500 outline-none flex-1"
+            />
+          </div>
           {navLinks.map((link) => (
             <a
               key={link.name}

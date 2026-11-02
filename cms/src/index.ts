@@ -1,0 +1,506 @@
+import type { Core } from '@strapi/strapi';
+
+interface InitialProject {
+  title: string;
+  description: string;
+  imageUrl: string;
+  videoUrl?: string;
+  year?: string;
+  category: string;
+  sectionId: "commercials" | "music-videos" | "weddings" | "events" | "photography";
+  role?: string;
+  camera?: string;
+  matchScore?: number;
+  duration?: string;
+  mediaType: "video" | "photo";
+  isHero: boolean;
+  order: number;
+}
+
+const INITIAL_PROJECTS: InitialProject[] = [
+  // ── SHOWREEL HERO ──
+  {
+    title: "Kemazirham Cinematography",
+    description: "Kompilasi karya sinematografi terbaik, menggabungkan cerita visual yang kuat, pencahayaan dramatis, dan komposisi yang memukau. Menghidupkan setiap momen menjadi sebuah mahakarya sinema.",
+    imageUrl: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&rel=0",
+    year: "2026",
+    category: "Showreel",
+    sectionId: "commercials",
+    role: "Director of Photography, Colorist & Editor",
+    camera: "RED V-Raptor 8K VV & Arri Signature Primes",
+    matchScore: 99,
+    duration: "3m 45s",
+    mediaType: "video",
+    isHero: true,
+    order: 0,
+  },
+  // ── COMMERCIALS ──
+  {
+    title: "Urban Runner",
+    description: "Iklan komersial untuk brand sepatu olahraga ternama. Menekankan dinamisme pergerakan di lanskap urban megapolitan dengan transisi kecepatan tinggi dan pencahayaan dinamis.",
+    imageUrl: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1&rel=0",
+    year: "2025",
+    category: "Commercial",
+    sectionId: "commercials",
+    role: "Director of Photography",
+    camera: "Sony FX6 & anamorphic Cooke Anamorphic/i",
+    matchScore: 98,
+    mediaType: "video",
+    isHero: false,
+    order: 1,
+  },
+  {
+    title: "Midnight Vogue",
+    description: "Fashion film pendek yang ditayangkan secara eksklusif pada Paris Fashion Week. Eksplorasi bayangan dramatis, siluet elegan, dan tekstur kain mewah.",
+    imageUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=1771&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/ZSM3w1v-A_Y?autoplay=1&rel=0",
+    year: "2024",
+    category: "Fashion Film",
+    sectionId: "commercials",
+    role: "Cinematographer & Lighting Director",
+    camera: "ARRI Alexa Mini LF",
+    matchScore: 96,
+    mediaType: "video",
+    isHero: false,
+    order: 2,
+  },
+  {
+    title: "Neon Tech",
+    description: "Peluncuran produk teknologi hardware flagship terbaru dengan estetika cyberpunk, perpaduan lampu neon praktikal dan CGI integration yang mulus.",
+    imageUrl: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=1674&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/9No-FiEInLA?autoplay=1&rel=0",
+    year: "2025",
+    category: "Product Launch",
+    sectionId: "commercials",
+    role: "Director of Photography",
+    camera: "RED Monstro 8K",
+    matchScore: 97,
+    mediaType: "video",
+    isHero: false,
+    order: 3,
+  },
+  {
+    title: "Drive Into Dusk",
+    description: "Iklan otomotif mewah yang direkam di lintasan pegunungan Alpen saat golden hour dan blue hour dengan car-rig khusus dan drone FPV berkecepatan tinggi.",
+    imageUrl: "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?q=80&w=1760&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/aqz-KE-bpKQ?autoplay=1&rel=0",
+    year: "2023",
+    category: "Automotive",
+    sectionId: "commercials",
+    role: "Director of Photography",
+    camera: "ARRI Alexa 35 & Pursuit Systems Chase Car",
+    matchScore: 95,
+    mediaType: "video",
+    isHero: false,
+    order: 4,
+  },
+  {
+    title: "Summer Splash",
+    description: "Iklan minuman musim panas yang menyegarkan. Menampilkan macro high-speed phantom shot untuk tetesan air, es, dan kesegaran buah segar.",
+    imageUrl: "https://images.unsplash.com/photo-1559136555-e46718d0426b?q=80&w=1769&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/H7jtC8vjXw8?autoplay=1&rel=0",
+    year: "2024",
+    category: "F&B Commercial",
+    sectionId: "commercials",
+    role: "Cinematographer & Tabletop Specialist",
+    camera: "Phantom Flex 4K (1000 FPS)",
+    matchScore: 94,
+    mediaType: "video",
+    isHero: false,
+    order: 5,
+  },
+  {
+    title: "Velocity Bloom",
+    description: "Campaign beauty dan lifestyle yang memadukan mode premium dengan ritme cepat, detail close-up produk, dan sinematografi yang lembut namun berenergi tinggi.",
+    imageUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&rel=0",
+    year: "2025",
+    category: "Beauty Campaign",
+    sectionId: "commercials",
+    role: "Director of Photography",
+    camera: "Sony FX3 & Zeiss CP.3",
+    matchScore: 96,
+    mediaType: "video",
+    isHero: false,
+    order: 6,
+  },
+  // ── MUSIC VIDEOS ──
+  {
+    title: "Echoes in the Dark",
+    description: "Official Music Video untuk band indie rock lokal dengan perpaduan moody lighting, haze atmosphere, dan handheld camera movement yang emosional.",
+    imageUrl: "https://images.unsplash.com/photo-1511899781951-320d7f3ece01?q=80&w=2070&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/04854XqcfCY?autoplay=1&rel=0",
+    year: "2025",
+    category: "Music Video",
+    sectionId: "music-videos",
+    role: "Director & Cinematographer",
+    camera: "Blackmagic URSA 12K",
+    matchScore: 99,
+    mediaType: "video",
+    isHero: false,
+    order: 6,
+  },
+  {
+    title: "Lost Horizon",
+    description: "Video musik sinematik yang direkam di lanskap dingin vulkanik Islandia, menampilkan panorama epik dan perjalanan spiritual.",
+    imageUrl: "https://images.unsplash.com/photo-1493225457124-a1a2a5956093?q=80&w=2070&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/uelHwf8o7_U?autoplay=1&rel=0",
+    year: "2024",
+    category: "Music Video",
+    sectionId: "music-videos",
+    role: "Director of Photography",
+    camera: "Sony FX9 & Zeiss Supreme Primes",
+    matchScore: 93,
+    mediaType: "video",
+    isHero: false,
+    order: 7,
+  },
+  {
+    title: "Neon Nights",
+    description: "Visualisasi musik synthwave retro ala era 80an dengan warna magenta-cyan, lensa vintage anamorfi, dan grain film 35mm.",
+    imageUrl: "https://images.unsplash.com/photo-1516280440502-869279a099a4?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/ktvTqknDobU?autoplay=1&rel=0",
+    year: "2023",
+    category: "Music Video",
+    sectionId: "music-videos",
+    role: "Cinematographer & Colorist",
+    camera: "Kodak 35mm 5219 Film & Arriflex 435",
+    matchScore: 97,
+    mediaType: "video",
+    isHero: false,
+    order: 8,
+  },
+  {
+    title: "Acoustic Soul",
+    description: "Sesi live recording musik akustik yang sangat intim dengan pencahayaan lilin tungsten alami dan warm tones yang menenangkan.",
+    imageUrl: "https://images.unsplash.com/photo-1470229722913-7c092bb83df1?q=80&w=1853&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/YkgkThdzX-8?autoplay=1&rel=0",
+    year: "2025",
+    category: "Live Session",
+    sectionId: "music-videos",
+    role: "DoP & Gimbal Operator",
+    camera: "Sony A7S III & Leica Summicron-C",
+    matchScore: 91,
+    mediaType: "video",
+    isHero: false,
+    order: 9,
+  },
+  {
+    title: "Party Anthem",
+    description: "Video klip energik bertempo cepat untuk trek EDM festival, dipenuhi pergerakan dinamis, stroboscopic lighting, dan crowd shots.",
+    imageUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1674&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/ZbZSe6N_BXs?autoplay=1&rel=0",
+    year: "2026",
+    category: "Music Video",
+    sectionId: "music-videos",
+    role: "Director of Photography",
+    camera: "RED Komodo 6K",
+    matchScore: 92,
+    mediaType: "video",
+    isHero: false,
+    order: 10,
+  },
+  {
+    title: "Orchestral Magic",
+    description: "Dokumentasi multi-kamera untuk konser orkestra simfoni di gedung pertunjukan bersejarah, menonjolkan ekspresi musisi dan arsitektur aula.",
+    imageUrl: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/iA_wovVBR9Y?autoplay=1&rel=0",
+    year: "2024",
+    category: "Live Event",
+    sectionId: "music-videos",
+    role: "Technical Director & Lead Cam",
+    camera: "Canon C500 Mark II Multi-cam Rig",
+    matchScore: 94,
+    mediaType: "video",
+    isHero: false,
+    order: 11,
+  },
+  // ── CINEMATIC WEDDINGS ──
+  {
+    title: "John & Jane",
+    description: "Dokumentasi pernikahan megah dengan gaya sinematik di tebing Uluwatu Bali, menangkap kehangatan momen ikrar cinta di depan matahari terbenam.",
+    imageUrl: "https://drive.google.com/thumbnail?id=1zbvYrtPNVvgueyHRCVy4SJTeI-hzX1W5",
+    videoUrl: "https://www.youtube.com/embed/QYDyqo9zbvE?autoplay=1&rel=0",
+    year: "2025",
+    category: "Destination Wedding",
+    sectionId: "weddings",
+    role: "Lead Cinematographer",
+    camera: "Sony FX3 & G-Master Lenses",
+    matchScore: 98,
+    mediaType: "video",
+    isHero: false,
+    order: 13,
+  },
+  {
+    title: "A Vow by the Lake",
+    description: "Pernikahan intim di tepi danau berkabut dengan pencahayaan golden hour alami dan pendekatan storytelling dokumenter yang puitis.",
+    imageUrl: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1769&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/QYDyqo9zbvE?autoplay=1&rel=0",
+    year: "2024",
+    category: "Intimate Wedding",
+    sectionId: "weddings",
+    role: "DoP & Editor",
+    camera: "Sony FX6",
+    matchScore: 96,
+    mediaType: "video",
+    isHero: false,
+    order: 14,
+  },
+  {
+    title: "Urban Romance",
+    description: "Pre-wedding photoshoot and cinematic visual teaser di tengah hiruk-pikuk lampu malam kota metropolitan dan rooftop gedung pencakar langit.",
+    imageUrl: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/QYDyqo9zbvE?autoplay=1&rel=0",
+    year: "2025",
+    category: "Pre-Wedding",
+    sectionId: "weddings",
+    role: "Director & Cinematographer",
+    camera: "Blackmagic Pocket 6K Pro",
+    matchScore: 95,
+    mediaType: "video",
+    isHero: false,
+    order: 15,
+  },
+  {
+    title: "The Grand Celebration",
+    description: "Resepsi pernikahan agung bergaya klasik Eropa dengan tata cahaya chandelier megah, iringan musik orkestra, dan lebih dari 1000 tamu undangan.",
+    imageUrl: "https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/Qp3jGBfEhFU?autoplay=1&rel=0",
+    year: "2023",
+    category: "Royal Wedding",
+    sectionId: "weddings",
+    role: "Lead DoP",
+    camera: "RED V-Raptor & Master Primes",
+    matchScore: 90,
+    mediaType: "video",
+    isHero: false,
+    order: 15,
+  },
+  // ── EVENTS ──
+  {
+    title: "Tech Conference 2025",
+    description: "Dokumentasi acara konferensi inovasi teknologi tahunan terbesar dengan lebih dari 5000 peserta, keynote stage berlayar LED masif, dan breakout sessions.",
+    imageUrl: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/2vjPBrBU-TM?autoplay=1&rel=0",
+    year: "2025",
+    category: "Corporate Event",
+    sectionId: "events",
+    role: "Show Director & Lead Cam",
+    camera: "Sony FX6 & Broadcast PTZ Rig",
+    matchScore: 93,
+    mediaType: "video",
+    isHero: false,
+    order: 16,
+  },
+  {
+    title: "Summer Music Fest",
+    description: "Official cinematic aftermovie festival musik musim panas 3 hari berturut-turut yang meriah dengan pyrotechnics dan drone light show.",
+    imageUrl: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/FTQbiNvZqaY?autoplay=1&rel=0",
+    year: "2024",
+    category: "Festival Aftermovie",
+    sectionId: "events",
+    role: "DoP & Drone Pilot",
+    camera: "RED Komodo & DJI Inspire 3",
+    matchScore: 97,
+    mediaType: "video",
+    isHero: false,
+    order: 17,
+  },
+  {
+    title: "Gala Dinner",
+    description: "Malam penghargaan eksklusif dan gala dinner tahunan perusahaan multinasional, memancarkan kesan prestisius dan mewah.",
+    imageUrl: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1769&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/YcopV1_pVFk?autoplay=1&rel=0",
+    year: "2025",
+    category: "Gala Dinner",
+    sectionId: "events",
+    role: "Lead Cinematographer",
+    camera: "Sony FX3 Rig",
+    matchScore: 89,
+    mediaType: "video",
+    isHero: false,
+    order: 18,
+  },
+  {
+    title: "Brand Activation",
+    description: "Highlight aktivasi merek dan peluncuran instalasi interaktif di atrium pusat perbelanjaan ternama dengan interaksi audiens yang tinggi.",
+    imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/BI23U7U2aUY?autoplay=1&rel=0",
+    year: "2026",
+    category: "Brand Event",
+    sectionId: "events",
+    role: "Videographer & Editor",
+    camera: "Sony FX6",
+    matchScore: 94,
+    mediaType: "video",
+    isHero: false,
+    order: 19,
+  },
+  {
+    title: "Charity Run Marathon",
+    description: "Dokumentasi acara lari maraton amal pagi hari untuk penggalangan dana sosial, menampilkan ribuan pelari dengan energi dan semangat sportivitas.",
+    imageUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
+    videoUrl: "https://www.youtube.com/embed/HOBjpKl9M2k?autoplay=1&rel=0",
+    year: "2023",
+    category: "Sports Event",
+    sectionId: "events",
+    role: "DoP & Gimbal Chase Operator",
+    camera: "Sony FX3 & Segway Rig",
+    matchScore: 92,
+    mediaType: "video",
+    isHero: false,
+    order: 20,
+  },
+  // ── PHOTOGRAPHY ──
+  {
+    title: "Shadows & Silhouettes",
+    description: "Editorial fashion series yang mengeksplorasi chiaroscuro lighting, kontras bayangan tajam, dan tekstur kain monokromatik di galeri seni modern.",
+    imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1976&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2025",
+    category: "Editorial Fashion",
+    sectionId: "photography",
+    role: "Lead Photographer & Retoucher",
+    camera: "Leica M11 & Summilux-M 50mm f/1.4 ASPH",
+    matchScore: 99,
+    mediaType: "photo",
+    isHero: false,
+    order: 21,
+  },
+  {
+    title: "Neon Metropolis",
+    description: "Koleksi fotografi jalanan malam hari yang menangkap pantulan hujan, lampu neon cyberpunk, dan kehidupan tersembunyi kota metropolitan.",
+    imageUrl: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1964&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2026",
+    category: "Street & Urban",
+    sectionId: "photography",
+    role: "Photographer & Colorist",
+    camera: "Hasselblad X2D 100C & XCD 38mm f/2.5 V",
+    matchScore: 97,
+    mediaType: "photo",
+    isHero: false,
+    order: 22,
+  },
+  {
+    title: "Highland Mist",
+    description: "Seri fotografi lanskap fine-art berskala besar di dataran tinggi berkabut Bromo dan Ijen saat fajar, menghasilkan kedalaman warna 16-bit yang megah.",
+    imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2024",
+    category: "Fine Art Landscape",
+    sectionId: "photography",
+    role: "Landscape Photographer",
+    camera: "Fujifilm GFX 100 II & GF 45-100mm f/4",
+    matchScore: 96,
+    mediaType: "photo",
+    isHero: false,
+    order: 23,
+  },
+  {
+    title: "Film Stills: The Director's Cut",
+    description: "Kompilasi dokumentasi still-photography eksklusif di balik layar produksi film layar lebar, menangkap konsentrasi sutradara dan chemistry para aktor.",
+    imageUrl: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2025",
+    category: "Set & Unit Stills",
+    sectionId: "photography",
+    role: "Unit Still Photographer",
+    camera: "Leica SL2-S & APO-Summicron-SL 35mm f/2",
+    matchScore: 95,
+    mediaType: "photo",
+    isHero: false,
+    order: 24,
+  },
+  {
+    title: "Raw Emotions",
+    description: "Potret studio hitam-putih intim dengan pencahayaan tunggal besar (deep parabolic softbox), menonjolkan karakter wajah dan ketajaman tatapan mata.",
+    imageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2024",
+    category: "Studio Portraiture",
+    sectionId: "photography",
+    role: "Portrait Photographer",
+    camera: "Hasselblad H6D-100c & HC 100mm f/2.2",
+    matchScore: 98,
+    mediaType: "photo",
+    isHero: false,
+    order: 25,
+  },
+  {
+    title: "Automotive Precision",
+    description: "Fotografi komersial supercar di trek balap tertutup saat sunset, memadukan motion blur dinamis dan detail serat karbon presisi tinggi.",
+    imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop",
+    videoUrl: "",
+    year: "2025",
+    category: "Automotive Commercial",
+    sectionId: "photography",
+    role: "Commercial Photographer",
+    camera: "Sony A7R V & FE 85mm f/1.4 GM",
+    matchScore: 94,
+    mediaType: "photo",
+    isHero: false,
+    order: 26,
+  },
+];
+
+const strapiLifecycle = {
+  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    try {
+      // 1. Berikan permission publik (Read-Only) otomatis untuk API projects
+      const publicRole = await strapi
+        .query('plugin::users-permissions.role')
+        .findOne({ where: { type: 'public' } });
+
+      if (publicRole) {
+        const permissionsToEnable = [
+          'api::project.project.find',
+          'api::project.project.findOne',
+        ];
+
+        for (const action of permissionsToEnable) {
+          const existing = await strapi
+            .query('plugin::users-permissions.permission')
+            .findOne({
+              where: {
+                role: publicRole.id,
+                action,
+              },
+            });
+
+          if (!existing) {
+            await strapi.query('plugin::users-permissions.permission').create({
+              data: {
+                role: publicRole.id,
+                action,
+                enabled: true,
+              },
+            });
+          }
+        }
+      }
+
+      // 2. Seed data portfolio awal jika tabel masih kosong
+      const existingCount = await strapi.documents('api::project.project').count({});
+      if (existingCount === 0) {
+        strapi.log.info('🌱 Seeding initial portfolio data to Strapi CMS...');
+        for (const proj of INITIAL_PROJECTS) {
+          await strapi.documents('api::project.project').create({
+            data: proj,
+            status: 'published',
+          });
+        }
+        strapi.log.info(`✅ Successfully seeded ${INITIAL_PROJECTS.length} portfolio items!`);
+      }
+    } catch (err) {
+      strapi.log.error('Error during Strapi bootstrap initialization:', err);
+    }
+  },
+};
+
+export default strapiLifecycle;

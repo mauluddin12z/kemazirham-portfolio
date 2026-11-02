@@ -1,16 +1,20 @@
 "use client";
 
-import React from "react";
 import { Play } from "lucide-react";
-import { HERO_PROJECT, Project } from "@/data/portfolioData";
+import { Project } from "@/types/portfolio";
 import Image from "next/image";
 
 interface HeroProps {
-  onOpenProject: (project: Project) => void;
+  heroProject?: Project | null;
   onPlayShowreel: (project: Project) => void;
 }
 
-export default function Hero({ onOpenProject, onPlayShowreel }: HeroProps) {
+export default function Hero({ heroProject, onPlayShowreel }: HeroProps) {
+  const title = heroProject?.title || "Kemazirham Cinematography";
+  const description =
+    heroProject?.description ||
+    "Kompilasi karya sinematografi terbaik, menggabungkan cerita visual yang kuat, pencahayaan dramatis, dan komposisi yang memukau.";
+
   return (
     <header className="relative w-full h-[85vh] sm:h-[90vh] bg-cover bg-center overflow-hidden flex items-end pb-24 sm:pb-32">
       {/* Background Image Banner */}
@@ -31,23 +35,25 @@ export default function Hero({ onOpenProject, onPlayShowreel }: HeroProps) {
       <div className="relative z-20 px-4 sm:px-8 md:px-12 w-full max-w-3xl">
         {/* Title */}
         <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight leading-[1.1] drop-shadow-2xl">
-          {HERO_PROJECT.title}
+          {title}
         </h1>
 
         {/* Synopsis Description */}
         <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 drop-shadow-md font-medium leading-relaxed line-clamp-3 md:line-clamp-4 max-w-2xl">
-          {HERO_PROJECT.description}
+          {description}
         </p>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          <button
-            onClick={() => onPlayShowreel(HERO_PROJECT)}
-            className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
-          >
-            <Play className="w-5 h-5 fill-black" />
-            <span>Putar</span>
-          </button>
+          {heroProject && (
+            <button
+              onClick={() => onPlayShowreel(heroProject)}
+              className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+            >
+              <Play className="w-5 h-5 fill-black" />
+              <span>Putar</span>
+            </button>
+          )}
 
           <a
             href="https://wa.me/6285383196699"

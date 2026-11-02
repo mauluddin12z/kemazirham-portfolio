@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
   Plus,
@@ -12,7 +12,7 @@ import {
   ExternalLink,
   Play,
 } from "lucide-react";
-import { Project } from "@/data/portfolioData";
+import { Project } from "@/types/portfolio";
 
 interface ProjectModalProps {
   project: Project | null;

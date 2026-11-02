@@ -81,18 +81,23 @@ jobs:
           tailscale status
 
           echo ""
-          echo "Checking VPS through Tailscale..."
+          echo "Checking VPS connectivity..."
 
+          # DERP relay juga merupakan koneksi valid.
+          # Jangan mewajibkan direct connection.
           tailscale ping \
             --timeout=30s \
-            "${{ secrets.SSH_HOST }}" \
-            || {
-              echo "ERROR: VPS is unreachable through Tailscale"
-              exit 1
-            }
+            "${{ secrets.SSH_HOST }}" || true
 
           echo ""
-          echo "Tailscale connection successful!"
+          echo "Checking TCP connectivity..."
+
+          nc -zv -w 15 \
+            "${{ secrets.SSH_HOST }}" \
+            "${{ secrets.SSH_PORT || '22' }}"
+
+          echo ""
+          echo "VPS SSH connectivity verified!"
 
       # ----------------------------------------
       # CHECK SSH PORT
@@ -204,6 +209,11 @@ jobs:
             echo "[2/4] Installing dependencies..."
 
             npm ci --prefer-offline --no-audit
+
+            if [ -d "cms" ]; then
+              echo "Installing & building Strapi CMS..."
+              cd cms && npm ci --prefer-offline --no-audit && npm run build && cd ..
+            fi
 
             # --------------------------------
             # BUILD NEXT.JS

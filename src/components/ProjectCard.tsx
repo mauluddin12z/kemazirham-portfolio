@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Play, Plus, Check, ChevronDown, Camera } from "lucide-react";
-import { Project } from "@/data/portfolioData";
+import { Project } from "@/types/portfolio";
 
 interface ProjectCardProps {
   project: Project;
