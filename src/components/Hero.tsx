@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Play, Info, Volume2, VolumeX } from "lucide-react";
+import { Play } from "lucide-react";
 import { HERO_PROJECT, Project } from "@/data/portfolioData";
 import Image from "next/image";
 
@@ -11,15 +11,13 @@ interface HeroProps {
 }
 
 export default function Hero({ onOpenProject, onPlayShowreel }: HeroProps) {
-  const [isMuted, setIsMuted] = React.useState(true);
-
   return (
     <header className="relative w-full h-[85vh] sm:h-[90vh] bg-cover bg-center overflow-hidden flex items-end pb-24 sm:pb-32">
       {/* Background Image Banner */}
       <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105">
         {/* Subtle Dark Overlays for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-[512px] aspect-auto opacity-80">
+        <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-lg aspect-auto opacity-80">
           <Image
             src="/hero-photo.png"
             alt="Hero Background"

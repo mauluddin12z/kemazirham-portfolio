@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Film, Video, PhoneIcon } from "lucide-react";
+import { PhoneIcon } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
             href="#"
             className="text-2xl font-black tracking-tighter block mb-2 transition-transform hover:scale-105 inline-block"
           >
-            <span className="text-[#E50914]">KEMAZ</span>
+            <span className="text-netflix-red">KEMAZ</span>
             <span className="text-white">IRHAM</span>
           </a>
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed mb-4">
@@ -60,7 +60,7 @@ export default function Footer() {
               href="https://www.instagram.com/kemazirham/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-zinc-900 hover:bg-[#E50914] text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-200 border border-zinc-800"
+              className="w-10 h-10 rounded-full bg-zinc-900 hover:bg-netflix-red text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-200 border border-zinc-800"
               aria-label="Instagram"
             >
               <svg
@@ -78,7 +78,7 @@ export default function Footer() {
             {/* Email */}
             <a
               href="https://wa.me/6285383196699"
-              className="w-10 h-10 rounded-full bg-zinc-900 hover:bg-[#E50914] text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-200 border border-zinc-800"
+              className="w-10 h-10 rounded-full bg-zinc-900 hover:bg-netflix-red text-zinc-300 hover:text-white flex items-center justify-center transition-all duration-200 border border-zinc-800"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Email"

@@ -9,7 +9,6 @@ interface NavbarProps {
 
 export default function Navbar({ onSearchChange }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -54,8 +53,8 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ease-in-out px-4 sm:px-8 md:px-12 py-3.5 flex items-center justify-between ${
         isScrolled
-          ? "bg-[#141414]/95 backdrop-blur-md shadow-lg shadow-black/60"
-          : "bg-gradient-to-b from-black/80 via-black/40 to-transparent"
+          ? "bg-netflix-dark/95 backdrop-blur-md shadow-lg shadow-black/60"
+          : "bg-linear-to-b from-black/80 via-black/40 to-transparent"
       }`}
     >
       <div className="flex items-center gap-6 lg:gap-10">
@@ -101,13 +100,13 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-[#141414]/98 backdrop-blur-xl border-b border-white/10 p-5 md:hidden shadow-2xl flex flex-col gap-3">
+        <div className="absolute top-full left-0 right-0 bg-netflix-dark/98 backdrop-blur-xl border-b border-white/10 p-5 md:hidden shadow-2xl flex flex-col gap-3">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="text-gray-200 hover:text-[#E50914] py-2 text-base font-medium border-b border-white/5"
+              className="text-gray-200 hover:text-netflix-red py-2 text-base font-medium border-b border-white/5"
             >
               {link.name}
             </a>
