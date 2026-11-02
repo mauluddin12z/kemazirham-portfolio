@@ -8,10 +8,8 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
-  # 1. Build dan test di GitHub runner
   build-and-test:
     name: Test & Build
     runs-on: ubuntu-latest
@@ -24,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
+          cache: npm
 
       - name: Install Dependencies
         run: npm ci
@@ -32,73 +30,64 @@ jobs:
       - name: Build Next.js Application
         run: npm run build
 
-  # 2. Deploy melalui private Tailscale network
   deploy:
     name: Deploy to Server via Tailscale
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    env:
-      TS_AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
-      TS_CLIENT_ID: ${{ secrets.TS_OAUTH_CLIENT_ID }}
 
     steps:
-      # METODE A: Hubungkan ke Tailscale menggunakan Auth Key (Paling mudah & direkomendasikan)
-      - name: Connect to Tailscale (Auth Key)
-        if: env.TS_AUTHKEY != ''
+      - name: Connect to Tailscale
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      # METODE B: Hubungkan ke Tailscale menggunakan OAuth Client (Jika pakai Client ID & Secret)
-      - name: Connect to Tailscale (OAuth)
-        if: env.TS_AUTHKEY == '' && env.TS_CLIENT_ID != ''
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-
-      # Cek ketersediaan host di jaringan Tailscale
-      - name: Verify Tailscale Connection
+      - name: Verify Tailscale
         run: |
-          echo "Memverifikasi koneksi ke host Tailscale: ${{ secrets.SSH_HOST }}"
-          ping -c 3 ${{ secrets.SSH_HOST }} || echo "Ping tidak direspons, melanjutkan ke SSH..."
+          tailscale status
+          tailscale ping --timeout=10s "${{ secrets.SSH_HOST }}"
 
-      # Akses VPS / Homeserver melalui IP Tailscale (100.x.y.z atau MagicDNS)
+      - name: Check SSH Port
+        run: |
+          nc -zv -w 10 \
+            "${{ secrets.SSH_HOST }}" \
+            "${{ secrets.SSH_PORT || '22' }}"
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          port: ${{ secrets.SSH_PORT || '22' }}
           timeout: 60s
           command_timeout: 15m
           script_stop: true
+
           script: |
             set -e
 
-            # Muat NVM & PATH Node/PM2 di server
             export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
             export PATH="$PATH:/usr/local/bin:/usr/bin:$HOME/.npm-global/bin"
 
-            # Masuk ke direktori aplikasi
-            cd /data/kemazirham-portfolio || cd "$HOME/kemazirham-portfolio" || exit 1
+            cd /data/kemazirham-portfolio || \
+              cd "$HOME/kemazirham-portfolio"
 
-            echo "🚀 [1/4] Pulling latest changes from GitHub..."
+            echo "🚀 [1/4] Pulling latest changes..."
             git pull origin main
 
             echo "📦 [2/4] Installing dependencies..."
-            npm install --prefer-offline --no-audit
+            npm ci --prefer-offline --no-audit
 
             echo "🏗️ [3/4] Building Next.js..."
             npm run build
 
-            echo "♻️ [4/4] Reloading PM2 with Zero-Downtime..."
-            pm2 reload ecosystem.config.js --env production || pm2 start ecosystem.config.js --env production
+            echo "♻️ [4/4] Reloading PM2..."
+            pm2 reload ecosystem.config.js --env production || \
+              pm2 start ecosystem.config.js --env production
+
             pm2 save
 
             echo "🎉 Deployment completed successfully!"
