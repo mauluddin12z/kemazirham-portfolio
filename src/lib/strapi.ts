@@ -22,7 +22,7 @@ export interface StrapiProjectDocument {
 const STRAPI_BASE_URL =
   process.env.STRAPI_URL ||
   process.env.NEXT_PUBLIC_STRAPI_URL ||
-  "http://127.0.0.1:1337";
+  "http://127.0.0.1:5002";
 
 const SECTION_TEMPLATES = [
   { id: "commercials", title: "Top Commercials", isLarge: true },

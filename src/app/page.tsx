@@ -163,7 +163,7 @@ export default function Home() {
               <div className="text-center py-20 text-zinc-500 text-sm">
                 <p>Belum ada project yang dipublikasikan di Strapi CMS.</p>
                 <p className="text-xs mt-1">
-                  Buka Strapi Admin (<code>http://localhost:1337/admin</code>)
+                  Buka Strapi Admin (<code>http://localhost:5002/admin</code>)
                   untuk menambah konten.
                 </p>
               </div>

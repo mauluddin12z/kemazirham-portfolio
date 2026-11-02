@@ -4,7 +4,7 @@ module.exports = {
     {
       name: "kemazirham",
       script: "node_modules/next/dist/bin/next",
-      args: "start -p 3000",
+      args: "start -p 3002",
       cwd: "./",
       instances: "max",
       exec_mode: "cluster",
@@ -15,13 +15,13 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: "development",
-        PORT: 3000,
-        STRAPI_URL: "http://127.0.0.1:1337",
+        PORT: 3002,
+        STRAPI_URL: "http://127.0.0.1:5002",
       },
       env_production: {
         NODE_ENV: "production",
-        PORT: 3000,
-        STRAPI_URL: "http://127.0.0.1:1337",
+        PORT: 3002,
+        STRAPI_URL: "http://127.0.0.1:5002",
       },
       error_file: "./logs/frontend-error.log",
       out_file: "./logs/frontend-out.log",
@@ -42,11 +42,11 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: "development",
-        PORT: 1337,
+        PORT: 5002,
       },
       env_production: {
         NODE_ENV: "production",
-        PORT: 1337,
+        PORT: 5002,
       },
       error_file: "./logs/cms-error.log",
       out_file: "./logs/cms-out.log",
