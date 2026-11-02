@@ -121,12 +121,15 @@ export default function Home() {
       )}
 
       {/* Global Project Details & Video Player Modal */}
-      <ProjectModal
-        project={selectedProject}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        autoPlayVideo={autoPlayVideo}
-      />
+      {isModalOpen && selectedProject && (
+        <ProjectModal
+          key={`${selectedProject.id}-${autoPlayVideo ? "play" : "info"}`}
+          project={selectedProject}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          autoPlayVideo={autoPlayVideo}
+        />
+      )}
 
       {/* Footer */}
       <Footer />

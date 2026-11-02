@@ -49,32 +49,29 @@ export default function ProjectModal({
   onClose,
   autoPlayVideo = false,
 }: ProjectModalProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const isPhoto = project?.mediaType === "photo";
+  const hasVideo = !isPhoto && !!project?.videoUrl;
+
+  const [isPlaying, setIsPlaying] = useState(!isPhoto && autoPlayVideo);
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
 
-  const isPhoto = project?.mediaType === "photo";
-  const hasVideo = !isPhoto && !!project?.videoUrl;
-
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      setIsPlaying(!isPhoto && autoPlayVideo);
-    } else {
-      document.body.style.overflow = "auto";
-      setIsPlaying(false);
-    }
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       document.body.style.overflow = "auto";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, autoPlayVideo, isPhoto, onClose]);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !project) return null;
 
@@ -165,7 +162,9 @@ export default function ProjectModal({
                       <span>Putar</span>
                     </button>
                   ) : (
-                    <span className="text-zinc-400 text-xs italic">Video tidak tersedia</span>
+                    <span className="text-zinc-400 text-xs italic">
+                      Video tidak tersedia
+                    </span>
                   )
                 ) : (
                   <a
@@ -211,7 +210,11 @@ export default function ProjectModal({
                     className="w-10 h-10 rounded-full border border-zinc-400 bg-black/40 hover:border-white hover:bg-white/10 flex items-center justify-center transition-all ml-auto"
                     title={isMuted ? "Aktifkan Audio" : "Matikan Audio"}
                   >
-                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    {isMuted ? (
+                      <VolumeX className="w-4 h-4" />
+                    ) : (
+                      <Volume2 className="w-4 h-4" />
+                    )}
                   </button>
                 )}
               </div>
@@ -247,7 +250,9 @@ export default function ProjectModal({
                     Dolby Vision
                   </span>
                   {project.duration && (
-                    <span className="text-zinc-400 text-xs">{project.duration}</span>
+                    <span className="text-zinc-400 text-xs">
+                      {project.duration}
+                    </span>
                   )}
                 </>
               ) : (
@@ -296,20 +301,31 @@ export default function ProjectModal({
             <div>
               <span className="text-zinc-500 block text-xs">Peran:</span>
               <span className="text-white font-medium">
-                {project.role ?? (isPhoto ? "Lead Photographer" : "Director of Photography, Editor")}
+                {project.role ??
+                  (isPhoto
+                    ? "Lead Photographer"
+                    : "Director of Photography, Editor")}
               </span>
             </div>
             <div>
-              <span className="text-zinc-500 block text-xs">Kamera & Lensa:</span>
+              <span className="text-zinc-500 block text-xs">
+                Kamera & Lensa:
+              </span>
               <span className="text-white font-medium">
                 {project.camera ?? "Leica / Hasselblad Prime Lenses"}
               </span>
             </div>
             {!isPhoto && project.videoUrl && (
               <div>
-                <span className="text-zinc-500 block text-xs mb-1">Tonton di:</span>
+                <span className="text-zinc-500 block text-xs mb-1">
+                  Tonton di:
+                </span>
                 <a
-                  href={project.videoUrl.replace("/embed/", "/watch?v=").replace("autoplay=1&", "").replace("?autoplay=1", "").replace("&rel=0", "")}
+                  href={project.videoUrl
+                    .replace("/embed/", "/watch?v=")
+                    .replace("autoplay=1&", "")
+                    .replace("?autoplay=1", "")
+                    .replace("&rel=0", "")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[#E50914] hover:underline text-xs font-medium"

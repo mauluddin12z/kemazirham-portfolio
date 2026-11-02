@@ -94,10 +94,6 @@ export default function Footer() {
 
       <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-zinc-900 flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500 gap-3">
         <p>&copy; 2026 Kemaz Irham Cinematography. All rights reserved.</p>
-        <p className="flex items-center gap-1.5 text-zinc-400">
-          <Video className="w-3.5 h-3.5 text-[#E50914]" /> Dibuat dengan format
-          Sinematik Netflix Style di Next.js
-        </p>
       </div>
     </footer>
   );

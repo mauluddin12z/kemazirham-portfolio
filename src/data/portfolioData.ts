@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  imageUrl?: string;
+  imageUrl: string;
   year: string;
   category: string;
   role?: string;
@@ -26,6 +26,8 @@ export const HERO_PROJECT: Project = {
   title: "Kemazirham Cinematography",
   description:
     "Kompilasi karya sinematografi terbaik, menggabungkan cerita visual yang kuat, pencahayaan dramatis, dan komposisi yang memukau. Menghidupkan setiap momen menjadi sebuah mahakarya sinema.",
+  imageUrl:
+    "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
   year: "2026",
   category: "Showreel",
   role: "Director of Photography, Colorist & Editor",
@@ -47,7 +49,7 @@ export const PORTFOLIO_SECTIONS: SectionCategory[] = [
         description:
           "Iklan komersial untuk brand sepatu olahraga ternama. Menekankan dinamisme pergerakan di lanskap urban megapolitan dengan transisi kecepatan tinggi dan pencahayaan dinamis.",
         imageUrl:
-          "https://lh3.googleusercontent.com/d/1zbvYrtPNVvgueyHRCVy4SJTeI-hzX1W5=s220",
+          "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1770&auto=format&fit=crop",
         year: "2025",
         category: "Commercial",
         role: "Director of Photography",
@@ -421,6 +423,90 @@ export const PORTFOLIO_SECTIONS: SectionCategory[] = [
       },
       {
         id: "photo-6",
+        title: "Automotive Precision",
+        description:
+          "Fotografi komersial supercar di trek balap tertutup saat sunset, memadukan motion blur dinamis dan detail serat karbon presisi tinggi.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop",
+        year: "2025",
+        category: "Automotive Commercial",
+        role: "Commercial Photographer",
+        camera: "Sony A7R V & FE 85mm f/1.4 GM",
+        matchScore: 94,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-7",
+        title: "Shadows & Silhouettes",
+        description:
+          "Editorial fashion series yang mengeksplorasi chiaroscuro lighting, kontras bayangan tajam, dan tekstur kain monokromatik di galeri seni modern.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1976&auto=format&fit=crop",
+        year: "2025",
+        category: "Editorial Fashion",
+        role: "Lead Photographer & Retoucher",
+        camera: "Leica M11 & Summilux-M 50mm f/1.4 ASPH",
+        matchScore: 99,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-8",
+        title: "Neon Metropolis",
+        description:
+          "Koleksi fotografi jalanan malam hari yang menangkap pantulan hujan, lampu neon cyberpunk, dan kehidupan tersembunyi kota metropolitan.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=1964&auto=format&fit=crop",
+        year: "2026",
+        category: "Street & Urban",
+        role: "Photographer & Colorist",
+        camera: "Hasselblad X2D 100C & XCD 38mm f/2.5 V",
+        matchScore: 97,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-9",
+        title: "Highland Mist",
+        description:
+          "Seri fotografi lanskap fine-art berskala besar di dataran tinggi berkabut Bromo dan Ijen saat fajar, menghasilkan kedalaman warna 16-bit yang megah.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2070&auto=format&fit=crop",
+        year: "2024",
+        category: "Fine Art Landscape",
+        role: "Landscape Photographer",
+        camera: "Fujifilm GFX 100 II & GF 45-100mm f/4",
+        matchScore: 96,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-10",
+        title: "Film Stills: The Director's Cut",
+        description:
+          "Kompilasi dokumentasi still-photography eksklusif di balik layar produksi film layar lebar, menangkap konsentrasi sutradara dan chemistry para aktor.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop",
+        year: "2025",
+        category: "Set & Unit Stills",
+        role: "Unit Still Photographer",
+        camera: "Leica SL2-S & APO-Summicron-SL 35mm f/2",
+        matchScore: 95,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-11",
+        title: "Raw Emotions",
+        description:
+          "Potret studio hitam-putih intim dengan pencahayaan tunggal besar (deep parabolic softbox), menonjolkan karakter wajah dan ketajaman tatapan mata.",
+        imageUrl:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1964&auto=format&fit=crop",
+        year: "2024",
+        category: "Studio Portraiture",
+        role: "Portrait Photographer",
+        camera: "Hasselblad H6D-100c & HC 100mm f/2.2",
+        matchScore: 98,
+        mediaType: "photo",
+      },
+      {
+        id: "photo-12",
         title: "Automotive Precision",
         description:
           "Fotografi komersial supercar di trek balap tertutup saat sunset, memadukan motion blur dinamis dan detail serat karbon presisi tinggi.",
