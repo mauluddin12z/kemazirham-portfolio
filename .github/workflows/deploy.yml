@@ -1,0 +1,70 @@
+name: CI/CD Auto Deploy (PM2)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Memungkinkan deploy manual dari dashboard GitHub Actions
+
+jobs:
+  # 1. Validasi Build di GitHub runner agar server aman dari kode rusak
+  build-and-test:
+    name: Test & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Next.js Application
+        run: npm run build
+
+  # 2. Deploy ke VPS Server menggunakan SSH & PM2
+  deploy:
+    name: Deploy to Server
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Executing remote SSH commands to deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            # Muat environment PATH & NVM (jika Node/PM2 diinstall via NVM)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            export PATH=$PATH:/usr/local/bin:/usr/bin:~/.npm-global/bin
+
+            # Masuk ke direktori aplikasi di VPS
+            cd /var/www/kemazirham || cd ~/kemazirham || exit 1
+
+            echo "🚀 [1/4] Pulling latest changes from GitHub..."
+            git pull origin main
+
+            echo "📦 [2/4] Installing dependencies..."
+            npm install --prefer-offline --no-audit
+
+            echo "🏗️ [3/4] Building Next.js..."
+            npm run build
+
+            echo "♻️ [4/4] Reloading PM2 with Zero-Downtime..."
+            pm2 reload ecosystem.config.js --env production || pm2 start ecosystem.config.js --env production
+            pm2 save
+
+            echo "🎉 Deployment completed successfully!"
