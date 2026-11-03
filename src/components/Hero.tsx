@@ -51,7 +51,7 @@ export default function Hero({ heroProject, onPlayShowreel }: HeroProps) {
               className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
             >
               <Play className="w-5 h-5 fill-black" />
-              <span>Putar</span>
+              <span>MY PORTFOLIO</span>
             </button>
           )}
 
