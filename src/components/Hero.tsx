@@ -1,8 +1,10 @@
 "use client";
 
-import { Play } from "lucide-react";
+import { useState } from "react";
+import { Play, Tag } from "lucide-react";
 import { Project } from "@/types/portfolio";
 import Image from "next/image";
+import PackageModal from "./PackageModal";
 
 interface HeroProps {
   heroProject?: Project | null;
@@ -10,65 +12,84 @@ interface HeroProps {
 }
 
 export default function Hero({ heroProject, onPlayShowreel }: HeroProps) {
+  const [isPackageOpen, setIsPackageOpen] = useState(false);
+
   const title = heroProject?.title || "Kemazirham Cinematography";
   const description =
     heroProject?.description ||
     "Kompilasi karya sinematografi terbaik, menggabungkan cerita visual yang kuat, pencahayaan dramatis, dan komposisi yang memukau.";
 
   return (
-    <header className="relative w-full h-[85vh] sm:h-[90vh] bg-cover bg-center overflow-hidden flex items-end pb-24 sm:pb-32">
-      {/* Background Image Banner */}
-      <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105">
-        {/* Subtle Dark Overlays for Readability */}
-        <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-lg aspect-auto opacity-80">
-          <Image
-            src="/hero-photo.png"
-            alt="Hero Background"
-            width={500}
-            height={500}
-          />
+    <>
+      <header className="relative w-full h-[85vh] sm:h-[90vh] bg-cover bg-center overflow-hidden flex items-end pb-24 sm:pb-32">
+        {/* Background Image Banner */}
+        <div className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105">
+          {/* Subtle Dark Overlays for Readability */}
+          <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/45 to-transparent" />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-96 sm:w-lg aspect-auto opacity-80">
+            <Image
+              src="/hero-photo.png"
+              alt="Hero Background"
+              width={500}
+              height={500}
+            />
+          </div>
         </div>
-      </div>
 
-      {/* Hero Content Information */}
-      <div className="relative z-20 px-4 sm:px-8 md:px-12 w-full max-w-3xl">
-        {/* Title */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight leading-[1.1] drop-shadow-2xl">
-          {title}
-        </h1>
+        {/* Hero Content Information */}
+        <div className="relative z-20 px-4 sm:px-8 md:px-12 w-full max-w-3xl">
+          {/* Title */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white mb-4 tracking-tight leading-[1.1] drop-shadow-2xl">
+            {title}
+          </h1>
 
-        {/* Synopsis Description */}
-        <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 drop-shadow-md font-medium leading-relaxed line-clamp-3 md:line-clamp-4 max-w-2xl">
-          {description}
-        </p>
+          {/* Synopsis Description */}
+          <p className="text-sm sm:text-base md:text-lg text-gray-200 mb-6 drop-shadow-md font-medium leading-relaxed line-clamp-3 md:line-clamp-4 max-w-2xl">
+            {description}
+          </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-          {heroProject && (
-            <button
-              onClick={() => onPlayShowreel(heroProject)}
-              className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            {heroProject && (
+              <button
+                onClick={() => onPlayShowreel(heroProject)}
+                className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+              >
+                <Play className="w-5 h-5 fill-black" />
+                <span>MY PORTFOLIO</span>
+              </button>
+            )}
+
+            <a
+              href="https://wa.me/6285383196699"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg backdrop-blur-md transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Order Now"
             >
-              <Play className="w-5 h-5 fill-black" />
-              <span>MY PORTFOLIO</span>
+              <span>Order now</span>
+            </a>
+
+            <button
+              onClick={() => setIsPackageOpen(true)}
+              className="bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/60 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg backdrop-blur-md transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+              aria-label="Lihat Paket & Harga"
+            >
+              <Tag className="w-5 h-5" />
+              <span>Package</span>
             </button>
-          )}
-
-          <a
-            href="https://wa.me/6285383196699"
-            className="bg-blue-600 hover:bg-zinc-700/60 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg backdrop-blur-md transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Email"
-          >
-            <span>Order now</span>
-          </a>
+          </div>
         </div>
-      </div>
 
-      {/* Netflix Bottom Gradient Blend */}
-      <div className="hero-fade-bottom absolute bottom-0 left-0 right-0 h-32 sm:h-48 pointer-events-none z-10" />
-    </header>
+        {/* Netflix Bottom Gradient Blend */}
+        <div className="hero-fade-bottom absolute bottom-0 left-0 right-0 h-32 sm:h-48 pointer-events-none z-10" />
+      </header>
+
+      {/* Package & Pricing Modal */}
+      <PackageModal
+        isOpen={isPackageOpen}
+        onClose={() => setIsPackageOpen(false)}
+      />
+    </>
   );
 }
