@@ -43,10 +43,13 @@ export default function ProjectRow({
   };
 
   return (
-    <section id={id} className="mb-8 sm:mb-12 relative group/section scroll-mt-24">
+    <section
+      id={id}
+      className="mb-8 sm:mb-12 relative group/section scroll-mt-24"
+    >
       {/* Row Header */}
       <div className="px-4 sm:px-8 md:px-12 mb-2 sm:mb-3 flex items-center justify-between">
-        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-wide flex items-center gap-2 group-hover/section:text-[#E50914] transition-colors">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-wide flex items-center gap-2 group-hover/section:text-netflix-red transition-colors">
           <span>{title}</span>
           <span className="text-xs text-zinc-400 font-normal hidden sm:inline">
             ({projects.length} Karya)
@@ -96,4 +99,3 @@ export default function ProjectRow({
     </section>
   );
 }
-

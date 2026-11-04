@@ -52,7 +52,7 @@ export default function Navbar({ onSearchChange }: NavbarProps) {
           href="#"
           className="text-2xl sm:text-3xl font-black tracking-tighter transition-transform hover:scale-105 select-none"
         >
-          <span className="text-[#E50914]">KEMAZ</span>
+          <span className="text-netflix-red">KEMAZ</span>
           <span className="text-white">IRHAM</span>
         </a>
 

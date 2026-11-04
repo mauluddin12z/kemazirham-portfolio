@@ -127,7 +127,7 @@ export default function ProjectModal({
                   className="absolute inset-0 flex items-center justify-center group/play"
                   aria-label="Putar video"
                 >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center group-hover/play:bg-[#E50914] group-hover/play:border-[#E50914] transition-all duration-300 shadow-2xl">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center group-hover/play:bg-netflix-red group-hover/play:border-netflix-red transition-all duration-300 shadow-2xl">
                     <Play className="w-7 h-7 sm:w-9 sm:h-9 fill-white ml-1" />
                   </div>
                 </button>
@@ -140,7 +140,7 @@ export default function ProjectModal({
             <div className="absolute bottom-5 left-5 right-5 z-20 pointer-events-none">
               {isPhoto && (
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="bg-[#E50914] text-white text-[11px] font-bold px-2 py-0.5 rounded tracking-wide flex items-center gap-1 pointer-events-none">
+                  <span className="bg-netflix-red text-white text-[11px] font-bold px-2 py-0.5 rounded tracking-wide flex items-center gap-1 pointer-events-none">
                     <Camera className="w-3 h-3" /> STILL PHOTOGRAPHY
                   </span>
                 </div>
@@ -196,7 +196,7 @@ export default function ProjectModal({
                 <button
                   onClick={() => setIsLiked(!isLiked)}
                   className={`w-10 h-10 rounded-full border border-zinc-400 bg-black/40 hover:border-white hover:bg-white/10 flex items-center justify-center transition-all ${
-                    isLiked ? "border-[#E50914] text-[#E50914]" : ""
+                    isLiked ? "border-netflix-red text-netflix-red" : ""
                   }`}
                   title="Sukai Karya Ini"
                 >
@@ -328,7 +328,7 @@ export default function ProjectModal({
                     .replace("&rel=0", "")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-[#E50914] hover:underline text-xs font-medium"
+                  className="inline-flex items-center gap-1.5 text-netflix-red hover:underline text-xs font-medium"
                 >
                   <ExternalLink className="w-3 h-3" /> Buka di YouTube
                 </a>

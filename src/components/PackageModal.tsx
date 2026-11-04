@@ -155,7 +155,7 @@ export default function PackageModal({
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all shrink-0 cursor-pointer ${
                   activeCategory === cat
-                    ? "bg-[#E50914] text-white shadow-lg shadow-[#E50914]/30"
+                    ? "bg-netflix-red text-white shadow-lg shadow-netflix-red/30"
                     : "bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10"
                 }`}
               >
@@ -169,7 +169,7 @@ export default function PackageModal({
         <div className="p-6">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 text-zinc-400 gap-3">
-              <Loader2 className="w-8 h-8 animate-spin text-[#E50914]" />
+              <Loader2 className="w-8 h-8 animate-spin text-netflix-red" />
               <p className="text-sm font-medium">
                 Memuat paket dari Strapi CMS...
               </p>
@@ -200,8 +200,8 @@ export default function PackageModal({
                   >
                     {/* Badge */}
                     {pkg.badge && (
-                      <div className="absolute top-3 right-3 z-10">
-                        <span className="bg-[#E50914] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
+                      <div className="absolute top-3 right-3">
+                        <span className="bg-netflix-red text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md">
                           {pkg.badge}
                         </span>
                       </div>
@@ -248,7 +248,7 @@ export default function PackageModal({
                         href={waLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full text-center py-2.5 px-4 rounded-lg bg-white/10 hover:bg-[#E50914] text-white text-xs sm:text-sm font-bold transition-all duration-200 group-hover:bg-[#E50914] shadow-md active:scale-95"
+                        className="w-full text-center py-2.5 px-4 rounded-lg bg-white/10 hover:bg-netflix-red text-white text-xs sm:text-sm font-bold transition-all duration-200 group-hover:bg-netflix-red shadow-md active:scale-95"
                       >
                         Pesan Sekarang
                       </a>
@@ -270,7 +270,7 @@ export default function PackageModal({
             href="https://wa.me/6285383196699?text=Halo%20Kemazirham%2C%20saya%20ingin%20konsultasi%20custom%20project"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#E50914] hover:underline font-semibold shrink-0"
+            className="text-netflix-red hover:underline font-semibold shrink-0"
           >
             Konsultasi Custom Project &rarr;
           </a>
