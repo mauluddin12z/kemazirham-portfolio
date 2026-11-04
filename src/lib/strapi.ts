@@ -1,4 +1,4 @@
-import { Project, SectionCategory } from "@/types/portfolio";
+import { Project, SectionCategory, PricingPackage } from "@/types/portfolio";
 
 export interface StrapiProjectDocument {
   id?: string | number;
@@ -113,3 +113,70 @@ export async function fetchPortfolioFromStrapi(): Promise<{
     return { heroProject: null, sections: [] };
   }
 }
+
+export interface StrapiPackageDocument {
+  id?: string | number;
+  documentId?: string;
+  name: string;
+  category: string;
+  price: string;
+  priceNote?: string;
+  color?: string;
+  badge?: string;
+  icon?: string;
+  features: string | string[];
+  order?: number;
+}
+
+/**
+ * Mengambil seluruh data paket harga layanan dari Strapi CMS
+ */
+export async function fetchPackagesFromStrapi(): Promise<PricingPackage[]> {
+  try {
+    const url = `${STRAPI_BASE_URL}/api/packages?sort=order:asc&pagination[pageSize]=100`;
+    const res = await fetch(url, {
+      cache: "no-store",
+      next: { revalidate: 0 },
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    });
+
+    if (!res.ok) {
+      console.warn(`[Strapi API] Gagal mengambil data paket: HTTP ${res.status}`);
+      return [];
+    }
+
+    const json = await res.json();
+    const items: StrapiPackageDocument[] = json.data || [];
+
+    return items.map((item) => {
+      let parsedFeatures: string[] = [];
+      if (Array.isArray(item.features)) {
+        parsedFeatures = item.features.map((f) => String(f).trim()).filter(Boolean);
+      } else if (typeof item.features === "string") {
+        parsedFeatures = item.features
+          .split("\n")
+          .map((f) => f.trim().replace(/^[-*•]\s*/, ""))
+          .filter(Boolean);
+      }
+
+      return {
+        id: item.documentId || String(item.id || item.name),
+        name: item.name,
+        category: item.category,
+        price: item.price,
+        priceNote: item.priceNote || "",
+        color: item.color || "",
+        badge: item.badge || undefined,
+        icon: item.icon || undefined,
+        features: parsedFeatures,
+        order: item.order ?? 0,
+      };
+    });
+  } catch (error) {
+    console.error("[Strapi] Error connecting to Strapi CMS for packages:", error);
+    return [];
+  }
+}
+

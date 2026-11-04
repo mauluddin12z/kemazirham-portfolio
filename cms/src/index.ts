@@ -447,12 +447,131 @@ const INITIAL_PROJECTS: InitialProject[] = [
   },
 ];
 
+interface InitialPackage {
+  name: string;
+  category: string;
+  price: string;
+  priceNote: string;
+  color: string;
+  badge?: string;
+  icon?: string;
+  features: string;
+  order: number;
+}
+
+const INITIAL_PACKAGES: InitialPackage[] = [
+  {
+    name: "Photography Basic",
+    category: "Photography",
+    price: "Rp 3.500.000",
+    priceNote: "per sesi",
+    color: "from-violet-600 to-purple-700",
+    icon: "Camera",
+    features: [
+      "Sesi pemotretan 3 jam",
+      "1 lokasi / studio",
+      "50 foto hasil editing",
+      "File digital resolusi tinggi",
+      "Pengiriman 7 hari kerja",
+    ].join("\n"),
+    order: 1,
+  },
+  {
+    name: "Photography Premium",
+    category: "Photography",
+    price: "Rp 7.500.000",
+    priceNote: "per sesi",
+    color: "from-violet-600 to-purple-700",
+    badge: "Popular",
+    icon: "Camera",
+    features: [
+      "Sesi pemotretan full day (8 jam)",
+      "Hingga 3 lokasi",
+      "150+ foto hasil editing",
+      "File RAW + digital resolusi tinggi",
+      "Cetak foto album premium",
+      "Pengiriman 5 hari kerja",
+    ].join("\n"),
+    order: 2,
+  },
+  {
+    name: "Videography Basic",
+    category: "Videography",
+    price: "Rp 5.000.000",
+    priceNote: "per project",
+    color: "from-blue-600 to-cyan-700",
+    icon: "Video",
+    features: [
+      "Produksi video 1 hari syuting",
+      "Durasi video 2–3 menit",
+      "Editing + color grading",
+      "1 revisi",
+      "Pengiriman 10 hari kerja",
+    ].join("\n"),
+    order: 3,
+  },
+  {
+    name: "Videography Premium",
+    category: "Videography",
+    price: "Rp 15.000.000",
+    priceNote: "per project",
+    color: "from-blue-600 to-cyan-700",
+    badge: "Best Value",
+    icon: "Video",
+    features: [
+      "Produksi video 2–3 hari syuting",
+      "Durasi video hingga 5 menit",
+      "Editing + color grading sinematik",
+      "Scoring musik & sound design",
+      "3 revisi",
+      "Pengiriman 14 hari kerja",
+    ].join("\n"),
+    order: 4,
+  },
+  {
+    name: "Wedding Package",
+    category: "Wedding",
+    price: "Rp 20.000.000",
+    priceNote: "per acara",
+    color: "from-rose-600 to-pink-700",
+    badge: "Recommended",
+    icon: "Film",
+    features: [
+      "Liputan foto + video full day",
+      "2 kameramen + 1 fotografer",
+      "Cinematic highlight reel 5 menit",
+      "Full documentation video",
+      "400+ foto hasil editing",
+      "Drone aerial shot",
+      "5 revisi",
+    ].join("\n"),
+    order: 5,
+  },
+  {
+    name: "Commercial / Ads",
+    category: "Commercial",
+    price: "Hubungi Kami",
+    priceNote: "custom quote",
+    color: "from-amber-500 to-orange-600",
+    icon: "Sparkles",
+    features: [
+      "Konsep & pre-production",
+      "Syuting multi-hari",
+      "Full crew profesional",
+      "Peralatan cinema grade",
+      "Post-production lengkap",
+      "Harga sesuai kebutuhan brand",
+    ].join("\n"),
+    order: 6,
+  },
+];
+
 const strapiLifecycle = {
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     try {
-      // 1. Berikan permission publik (Read-Only) otomatis untuk API projects
+      // 1. Berikan permission publik (Read-Only) otomatis untuk API projects dan packages
       const publicRole = await strapi
         .query('plugin::users-permissions.role')
         .findOne({ where: { type: 'public' } });
@@ -461,6 +580,8 @@ const strapiLifecycle = {
         const permissionsToEnable = [
           'api::project.project.find',
           'api::project.project.findOne',
+          'api::package.package.find',
+          'api::package.package.findOne',
         ];
 
         for (const action of permissionsToEnable) {
@@ -496,6 +617,19 @@ const strapiLifecycle = {
           });
         }
         strapi.log.info(`✅ Successfully seeded ${INITIAL_PROJECTS.length} portfolio items!`);
+      }
+
+      // 3. Seed data packages awal jika tabel masih kosong
+      const existingPackagesCount = await strapi.documents('api::package.package').count({});
+      if (existingPackagesCount === 0) {
+        strapi.log.info('🌱 Seeding initial package pricing data to Strapi CMS...');
+        for (const pkg of INITIAL_PACKAGES) {
+          await strapi.documents('api::package.package').create({
+            data: pkg,
+            status: 'published',
+          });
+        }
+        strapi.log.info(`✅ Successfully seeded ${INITIAL_PACKAGES.length} pricing packages!`);
       }
     } catch (err) {
       strapi.log.error('Error during Strapi bootstrap initialization:', err);

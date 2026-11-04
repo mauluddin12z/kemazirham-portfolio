@@ -20,3 +20,17 @@ export interface SectionCategory {
   projects: Project[];
 }
 
+export interface PricingPackage {
+  id: string;
+  name: string;
+  category: string;
+  price: string;
+  priceNote?: string;
+  color?: string;
+  badge?: string;
+  icon?: string;
+  features: string[];
+  order?: number;
+}
+
+
