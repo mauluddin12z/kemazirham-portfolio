@@ -50,15 +50,20 @@ export default function Hero({ heroProject, onPlayShowreel }: HeroProps) {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            {heroProject && (
-              <button
-                onClick={() => onPlayShowreel(heroProject)}
-                className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
-              >
-                <Play className="w-5 h-5 fill-black" />
-                <span>MY PORTFOLIO</span>
-              </button>
-            )}
+            <button
+              onClick={() => {
+                if (heroProject) {
+                  onPlayShowreel(heroProject);
+                } else {
+                  const firstSection = document.querySelector("section[id]");
+                  firstSection?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="bg-white hover:bg-white/85 text-black px-6 sm:px-8 py-2.5 sm:py-3 rounded-md flex items-center gap-2.5 font-bold text-base sm:text-lg transition-all duration-200 shadow-xl active:scale-95 cursor-pointer"
+            >
+              <Play className="w-5 h-5 fill-black" />
+              <span>MY PORTFOLIO</span>
+            </button>
 
             <a
               href="https://wa.me/6285383196699"
