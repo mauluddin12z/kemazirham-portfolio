@@ -40,9 +40,11 @@ export default function PackageModal({
   isOpen,
   onClose,
   initialPackages = [],
-}: PackageModalProps) {
+}: Readonly<PackageModalProps>) {
   const [packages, setPackages] = useState<PricingPackage[]>(initialPackages);
-  const [isLoading, setIsLoading] = useState<boolean>(initialPackages.length === 0);
+  const [isLoading, setIsLoading] = useState<boolean>(
+    initialPackages.length === 0,
+  );
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   useEffect(() => {
@@ -105,27 +107,34 @@ export default function PackageModal({
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
-      onClick={onClose}
+      className="fixed inset-0 z-100 flex items-center justify-center p-4 sm:p-6"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="package-modal-title"
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
+      {/* Clickable Backdrop to close modal */}
+      <button
+        type="button"
+        aria-label="Tutup modal"
+        tabIndex={-1}
+        className="fixed inset-0 w-full h-full bg-black/80 backdrop-blur-sm cursor-default"
+        onClick={onClose}
+      />
 
-      {/* Modal Dialog */}
-      <div
-        className="relative z-10 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+      {/* Modal Dialog Content */}
+      <div className="relative z-10 w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-2xl bg-zinc-900 border border-white/10 shadow-2xl">
         {/* Header */}
         <div className="sticky top-0 z-10 bg-zinc-900/95 backdrop-blur-md border-b border-white/10 px-6 py-4 flex items-center justify-between">
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            <h2
+              id="package-modal-title"
+              className="text-xl sm:text-2xl font-black text-white tracking-tight"
+            >
               Paket &amp; Harga Layanan
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-              Pilih paket sinematografi &amp; fotografi sesuai kebutuhan proyek Anda
+              Pilih paket sinematografi &amp; fotografi sesuai kebutuhan proyek
+              Anda
             </p>
           </div>
           <button
@@ -161,7 +170,9 @@ export default function PackageModal({
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20 text-zinc-400 gap-3">
               <Loader2 className="w-8 h-8 animate-spin text-[#E50914]" />
-              <p className="text-sm font-medium">Memuat paket dari Strapi CMS...</p>
+              <p className="text-sm font-medium">
+                Memuat paket dari Strapi CMS...
+              </p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-16 text-zinc-500 text-sm">
@@ -178,7 +189,7 @@ export default function PackageModal({
                 const waMessage = encodeURIComponent(
                   `Halo Kemazirham, saya tertarik dengan paket "${pkg.name}" (${pkg.price}${
                     pkg.priceNote ? ` - ${pkg.priceNote}` : ""
-                  }). Boleh minta info detail dan ketersediaan jadwal?`
+                  }). Boleh minta info detail dan ketersediaan jadwal?`,
                 );
                 const waLink = `https://wa.me/6285383196699?text=${waMessage}`;
 
@@ -197,7 +208,9 @@ export default function PackageModal({
                     )}
 
                     {/* Gradient Header */}
-                    <div className={`p-5 bg-linear-to-r ${gradient} text-white`}>
+                    <div
+                      className={`p-5 bg-linear-to-r ${gradient} text-white`}
+                    >
                       <div className="flex items-center gap-2 mb-2">
                         <div className="p-2 rounded-lg bg-black/20 backdrop-blur-xs">
                           {icon}
@@ -250,8 +263,8 @@ export default function PackageModal({
         {/* Footer Note */}
         <div className="border-t border-white/10 px-6 py-4 bg-zinc-950/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-400">
           <span>
-            * Harga dapat berubah sewaktu-waktu tergantung kebutuhan khusus proyek
-            Anda.
+            * Harga dapat berubah sewaktu-waktu tergantung kebutuhan khusus
+            proyek Anda.
           </span>
           <a
             href="https://wa.me/6285383196699?text=Halo%20Kemazirham%2C%20saya%20ingin%20konsultasi%20custom%20project"
